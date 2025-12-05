@@ -141,3 +141,28 @@ These results satisfy all constraints using *nominal* beam-theory stresses. In t
 
 The next section uses these optimized dimensions to build the CAD model for the full finite-element analysis.
 
+## 4. CAD Model of Improved Torque Wrench Handle
+
+Using the optimized dimensions from the automated MATLAB search, I created a 3D CAD model
+of the instrumented torque wrench handle. The handle is modeled as a prismatic rectangular
+beam with cross-section **0.61 in × 0.50 in**, supporting a **3/8 in** square drive block
+located 1.0 in from the strain-gauge region. The distance from the drive centerline to the
+load application point is 16 in, consistent with the hand-calculation model.
+
+A shaded side view of the final CAD geometry is shown below:
+
+![CAD side view of torque wrench](assets/images/wrench2.png)
+
+A top (plan) view highlights the rectangular cross-section and the location of the drive
+block relative to the handle width:
+
+![Top view of torque wrench](assets/images/wrench3.png)
+
+A fully dimensioned drawing is included below to document all key
+geometric values used for the FEM model:
+
+![Dimensioned side view of torque wrench](assets/images/wrench4.png)
+
+These views and dimensions define the geometry that will be imported into ANSYS for the
+finite-element simulation to follow.
+

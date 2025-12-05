@@ -203,6 +203,31 @@ where \(Y\) is the geometry factor and \(a\) is the assumed surface-crack depth.
 
 <p>The next section uses these optimized dimensions to build the CAD model for the full finite-element analysis.</p>
 
+<h2 id="4-cad-model-of-improved-torque-wrench-handle">4. CAD Model of Improved Torque Wrench Handle</h2>
+
+<p>Using the optimized dimensions from the automated MATLAB search, I created a 3D CAD model
+of the instrumented torque wrench handle. The handle is modeled as a prismatic rectangular
+beam with cross-section <strong>0.61 in × 0.50 in</strong>, supporting a <strong>3/8 in</strong> square drive block
+located 1.0 in from the strain-gauge region. The distance from the drive centerline to the
+load application point is 16 in, consistent with the hand-calculation model.</p>
+
+<p>A shaded side view of the final CAD geometry is shown below:</p>
+
+<p><img src="/assets/images/wrench2.png" alt="CAD side view of torque wrench" /></p>
+
+<p>A top (plan) view highlights the rectangular cross-section and the location of the drive
+block relative to the handle width:</p>
+
+<p><img src="/assets/images/wrench3.png" alt="Top view of torque wrench" /></p>
+
+<p>A fully dimensioned drawing is included below to document all key
+geometric values used for the FEM model:</p>
+
+<p><img src="/assets/images/wrench4.png" alt="Dimensioned side view of torque wrench" /></p>
+
+<p>These views and dimensions define the geometry that will be imported into ANSYS for the
+finite-element simulation to follow.</p>
+
 
 </div>
 
