@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Torque Wrench Design Analysis | John Apessos</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="Torque Wrench Design Analysis" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Mechanical Engineering student at Cornell University" />
+<meta property="og:description" content="Mechanical Engineering student at Cornell University" />
+<link rel="canonical" href="http://0.0.0.0:4000/3270_analysis/" />
+<meta property="og:url" content="http://0.0.0.0:4000/3270_analysis/" />
+<meta property="og:site_name" content="John Apessos" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Torque Wrench Design Analysis" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","description":"Mechanical Engineering student at Cornell University","headline":"Torque Wrench Design Analysis","url":"http://0.0.0.0:4000/3270_analysis/"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="http://0.0.0.0:4000/feed.xml" title="John Apessos" /></head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/">John Apessos</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/3270_analysis/">Torque Wrench Design Analysis</a><a class="page-link" href="/cuad/">CUAD</a><a class="page-link" href="/cv/">CV</a><a class="page-link" href="/">John Apessos</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <!-- Load MathJax for LaTeX rendering -->
+<script async id="MathJax-script"
+        src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+</script>
+
+<div class="page-content">
+  <h1 id="mae-3270-instrumented-torque-wrench-design">MAE 3270: Instrumented Torque Wrench Design</h1>
+
+<p>This page documents my design, analysis, and finite element modeling work for the MAE 3270 <strong>instrumented torque wrench</strong> project. It tracks the progression from first-cut hand calculations through scripting, CAD modeling, and FEM validation.</p>
+
+<hr />
+
+<h2 id="1-hand-calculation-overview-first-cut-design">1. Hand-Calculation Overview (First-Cut Design)</h2>
+
+<p>To develop an initial design for the torque-wrench handle, I model the handle as a <strong>prismatic cantilever beam</strong> of rectangular cross-section with thickness \(b\) and width \(h\). The handle is loaded by a tip force \(F\) that produces the required torque \(T\) about the drive:</p>
+
+\[M = F L\]
+
+<p>where \(L\) is the distance from the drive to the load point and \(M\) is the bending moment at the fixed section.</p>
+
+<p>For a rectangular cross-section, the area moment of inertia and the distance from the neutral axis to the outer fiber are:</p>
+
+\[I = \frac{b h^{3}}{12},
+\qquad
+c = \frac{h}{2}.\]
+
+<p>The corresponding maximum bending stress and longitudinal strain at the outer surface (where the strain gauge is placed) are:</p>
+
+\[\sigma = \frac{M c}{I},
+\qquad
+\varepsilon = \frac{\sigma}{E}.\]
+
+<p>with \(E\) the Young’s modulus of the chosen material.</p>
+
+<p>The tip deflection is estimated using Euler–Bernoulli beam theory for a cantilever with an end load:</p>
+
+\[\delta = \frac{F L^{3}}{3 E I}.\]
+
+<p>These closed-form expressions provide a <strong>first-cut design</strong> for the wrench handle, giving nominal stresses, strains at the gauge location, and load-point deflection for any chosen set of dimensions \((b, h, L)\) and material properties \((E, \sigma_y, S_{\text{fatigue}}, K_{IC})\).</p>
+
+<p>In the next step, I will expand this analysis by discussing the <strong>material selection, applied loading conditions, and mechanical constraints</strong> that define feasible geometries before moving into parametric design and finite-element modeling.</p>
+
+<h2 id="2-material-selection-and-design-constraints">2. Material Selection and Design Constraints</h2>
+
+<p>To support the automated design search and later FEM validation, I first selected a material and defined the mechanical constraints governing feasible wrench-handle geometries. I chose <strong>M42 high-speed steel</strong>, a high-strength tool steel commonly used in load-bearing applications requiring toughness, fatigue resistance, and dimensional stability.</p>
+
+<h3 id="21-material-properties-m42-tool-steel">2.1 Material Properties (M42 Tool Steel)</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Property</th>
+      <th>Symbol</th>
+      <th>Value</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Young’s modulus</td>
+      <td>\(E\)</td>
+      <td>\(32 \times 10^6 \ \text{psi}\)</td>
+    </tr>
+    <tr>
+      <td>Poisson’s ratio</td>
+      <td>\(\nu\)</td>
+      <td>0.29</td>
+    </tr>
+    <tr>
+      <td>Yield strength</td>
+      <td>\(S_y\)</td>
+      <td>\(120 \ \text{ksi}\)</td>
+    </tr>
+    <tr>
+      <td>Ultimate tensile strength</td>
+      <td>\(S_u\)</td>
+      <td>\(370 \ \text{ksi}\)</td>
+    </tr>
+    <tr>
+      <td>Fatigue strength at \(10^6\) cycles</td>
+      <td>\(S_{\text{fatigue}}\)</td>
+      <td>\(115 \ \text{ksi}\)</td>
+    </tr>
+    <tr>
+      <td>Plane-strain fracture toughness</td>
+      <td>\(K_{IC}\)</td>
+      <td>\(15 \ \text{ksi}\sqrt{\text{in}}\)</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>M42 provides high yield, ultimate, and fatigue strength, allowing a compact handle cross-section while maintaining acceptable safety factors. Its fracture toughness offers tolerance to small surface flaws or machining scratches, important for a tool that will undergo repeated torque cycling.</p>
+
+<h3 id="22-design-loads">2.2 Design Loads</h3>
+
+<p>The instrumented torque-wrench handle is modeled as a cantilever beam of length \(L\) loaded by a tip force \(F\) that produces the required torque \(T\) about the drive:</p>
+
+\[M = F L,
+\qquad
+T = 600 \ \text{in·lbf}.\]
+
+<p>For a handle length of \(L = 16 \ \text{in}\), the corresponding applied force is</p>
+
+\[F = \frac{T}{L}
+  = \frac{600}{16}
+  = 37.5 \ \text{lbf}.\]
+
+<p>This load is applied at the free end in both the analytical calculations and the FEM model.</p>
+
+<h3 id="23-performance-constraints-for-the-design-search">2.3 Performance Constraints for the Design Search</h3>
+
+<p>To ensure that the handle is structurally safe and produces a measurable strain-gauge output, the design variables \((b, h)\) and gauge location \(c\) must satisfy:</p>
+
+<ul>
+  <li>
+    <p><strong>Strain-gauge sensitivity requirement</strong> at rated torque<br />
+\(\text{sensitivity} \ge 1.0 \ \text{mV/V at } T = 600 \ \text{in·lbf}.\)</p>
+  </li>
+  <li>
+    <p><strong>Yield safety factor</strong><br />
+\(N_{\sigma} = \frac{S_y}{\sigma_{\text{max}}} \ge 4.\)</p>
+  </li>
+  <li>
+    <p><strong>Fracture-toughness safety factor</strong><br />
+\(N_K = \frac{K_{IC}}{Y \, \sigma_{\text{max}} \sqrt{\pi a}} \ge 2,\)
+where \(Y\) is the geometry factor and \(a\) is the assumed surface-crack depth.</p>
+  </li>
+  <li>
+    <p><strong>Fatigue safety factor</strong> at \(10^6\) cycles<br />
+\(N_s = \frac{S_{\text{fatigue}}}{\sigma_{\text{max}}} \ge 1.5.\)</p>
+  </li>
+  <li>
+    <p><strong>Deflection constraint:</strong> tip deflection must remain small so the wrench feels stiff and usable.</p>
+  </li>
+  <li>
+    <p>The cross-section must provide <strong>sufficient flat area</strong> at distance \(c\) for commercial strain-gauge bonding.</p>
+  </li>
+</ul>
+
+<p>These material properties and constraints define the feasible design space used in the MATLAB design search. In the next section, I implement the beam-theory equations in a script that sweeps over candidate geometries \((b, h, c)\) and identifies the smallest cross-section that satisfies all required performance limits.</p>
+
+<h2 id="3-automated-dimension-search-matlab-script">3. Automated Dimension Search (MATLAB Script)</h2>
+
+<p>To iterate the initial design, I wrote a MATLAB script that sweeps the handle height <strong>h</strong> while keeping the thickness <strong>b = 0.50 in</strong> and strain-gauge location <strong>c = 1.0 in</strong> fixed. For each candidate height, the script computes the nominal bending stress, strain, torque-wrench sensitivity (mV/V), and the safety factors for yield, fracture, and fatigue.</p>
+
+<p>The search identifies the <strong>smallest</strong> height <strong>h</strong> that satisfies the design requirements outlined in <strong>2.3</strong>. The condensed MATLAB script used for this automated search is shown below:</p>
+
+<p><img src="/assets/images/wrench1.png" alt="Automated search MATLAB script" /></p>
+
+<p>The script sweeps <strong>h = 0.40–0.90 in</strong>, applies standard Euler–Bernoulli beam formulas to compute nominal bending stress and deflection, evaluates sensitivity and safety factors for each candidate, and stops as soon as all requirements are met.</p>
+
+<p>The script selected:</p>
+
+<ul>
+  <li><strong>h = 0.612 in</strong></li>
+  <li><strong>b = 0.500 in</strong></li>
+  <li><strong>c = 1.000 in</strong></li>
+  <li>Sensitivity = <strong>1.20 mV/V</strong></li>
+  <li>Yield SF = <strong>6.24</strong></li>
+  <li>Fracture SF = <strong>2.00</strong></li>
+  <li>Fatigue SF = <strong>5.98</strong></li>
+  <li>Tip deflection = <strong>0.17 in</strong></li>
+</ul>
+
+<p>These results satisfy all constraints using <em>nominal</em> beam-theory stresses. In the FEM analysis that follows, local stresses near the drive block will increase due to stress concentrations, but this automated search provides a reasonable first-cut sizing of the handle geometry.</p>
+
+<p>The next section uses these optimized dimensions to build the CAD model for the full finite-element analysis.</p>
+
+
+</div>
+
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">John Apessos</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">John Apessos</li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>Mechanical Engineering student at Cornell University</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
