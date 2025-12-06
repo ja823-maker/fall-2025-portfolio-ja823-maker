@@ -9,16 +9,16 @@
 <meta property="og:locale" content="en_US" />
 <meta name="description" content="Mechanical Engineering student at Cornell University" />
 <meta property="og:description" content="Mechanical Engineering student at Cornell University" />
-<link rel="canonical" href="http://0.0.0.0:4000/3270_analysis/" />
-<meta property="og:url" content="http://0.0.0.0:4000/3270_analysis/" />
+<link rel="canonical" href="http://localhost:4000/3270_analysis/" />
+<meta property="og:url" content="http://localhost:4000/3270_analysis/" />
 <meta property="og:site_name" content="John Apessos" />
 <meta property="og:type" content="website" />
 <meta name="twitter:card" content="summary" />
 <meta property="twitter:title" content="Torque Wrench Design Analysis" />
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"WebPage","description":"Mechanical Engineering student at Cornell University","headline":"Torque Wrench Design Analysis","url":"http://0.0.0.0:4000/3270_analysis/"}</script>
+{"@context":"https://schema.org","@type":"WebPage","description":"Mechanical Engineering student at Cornell University","headline":"Torque Wrench Design Analysis","url":"http://localhost:4000/3270_analysis/"}</script>
 <!-- End Jekyll SEO tag -->
-<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="http://0.0.0.0:4000/feed.xml" title="John Apessos" /></head>
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="John Apessos" /></head>
 <body><header class="site-header" role="banner">
 
   <div class="wrapper"><a class="site-title" rel="author" href="/">John Apessos</a><nav class="site-nav">
@@ -228,6 +228,203 @@ geometric values used for the FEM model:</p>
 <p>These views and dimensions define the geometry that will be imported into ANSYS for the
 finite-element simulation to follow.</p>
 
+<h2 id="5-load--boundary-condition-diagram-fem-setup">5. Load + Boundary Condition Diagram (FEM Setup)</h2>
+
+<p>The figure below summarizes the loading and boundary conditions applied to the torque-wrench model in ANSYS. These conditions match the analytical assumptions used in the hand-calculation design.</p>
+
+<p><img src="/assets/images/wrench5.png" alt="FEM load and boundary condition diagram" /></p>
+
+<h3 id="boundary-conditions">Boundary Conditions</h3>
+<ul>
+  <li>The <strong>upper 0.40 in</strong> of the 3/8” drive block is modeled as a <strong>fully fixed region</strong>, constraining all translational and rotational degrees of freedom.</li>
+  <li>This represents the clamping condition specified in the assignment.</li>
+</ul>
+
+<h3 id="applied-load">Applied Load</h3>
+<ul>
+  <li>A force of <strong>37.5 lbf</strong> is applied at the end of the handle, located <strong>16 in</strong> from the drive centerline.</li>
+  <li>This corresponds to the required torque:<br />
+\(T = F L = 37.5 \, \text{lbf} \times 16 \, \text{in} = 600 \, \text{in·lbf}.\)</li>
+</ul>
+
+<h3 id="gauge-location">Gauge Location</h3>
+<ul>
+  <li>The strain gauge is located on the side face of the handle at <strong>c = 1.0 in</strong> from the drive centerline.</li>
+  <li>In the FEM analysis, normal strain in this longitudinal direction is later extracted to compute the wrench sensitivity (mV/V).</li>
+</ul>
+
+<h3 id="coordinate-system">Coordinate System</h3>
+<ul>
+  <li>A right-handed coordinate system is shown for reference:
+    <ul>
+      <li><strong>x-axis:</strong> width direction</li>
+      <li><strong>y-axis:</strong> vertical</li>
+      <li><strong>z-axis:</strong> along the length of the handle</li>
+    </ul>
+  </li>
+</ul>
+
+<p>This diagram establishes the exact loading and constraints used for the finite-element analysis of the improved torque-wrench design.</p>
+
+<h2 id="6-normal-strain-contours-gauge-direction">6. Normal Strain Contours (Gauge Direction)</h2>
+
+<p><img src="/assets/images/wrench6.png" alt="Normal strain contour" /></p>
+
+<h3 id="strain-probe-location-shear-strain-in-gauge-direction">Strain Probe Location (Shear Strain in Gauge Direction)</h3>
+
+<p>To obtain the normal strain that the instrumented gauge would measure under torque, I placed a strain probe on the side surface of the handle at the gauge location \(c = 1.0 \text{ in}\) from the drive block.</p>
+
+<p>The figure below shows the probe placement used to extract this shear strain at the gauge location:</p>
+
+<p><img src="/assets/images/wrench7.png" alt="Strain probe location" /></p>
+
+<p>This probe value is used in Section 8 to report the FEM strain at the gauge and later to compute the torque-wrench sensitivity in mV/V.</p>
+
+<h2 id="7-contour-plot-of-maximum-principal-stress-fem">7. Contour Plot of Maximum Principal Stress (FEM)</h2>
+
+<p>The figure below shows the maximum principal stress distribution in the torque-wrench handle under the applied torque of 600 in·lbf. As expected, the highest stresses occur at the transition between the 3/8-in drive block and the handle, where geometric discontinuities create localized stress concentrations.</p>
+
+<p><img src="/assets/images/wrench8.png" alt="Maximum principal stress contour" /></p>
+
+<p>This plot is used in Section 8 to report the maximum prinicipal stress in the model and to compare FEM results with the hand-calculation predictions.</p>
+
+<h2 id="8-summary-of-fem-results">8. Summary of FEM Results</h2>
+
+<p>The key quantities extracted from the FEM simulation are summarized in the table below.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Quantity</th>
+      <th>FEM Result</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>\(\sigma_{\max}\)</td>
+      <td>\(39.1 \ \text{ksi}\)</td>
+      <td>Maximum normal stress anywhere in the model, occurring at the drive–handle transition.</td>
+    </tr>
+    <tr>
+      <td>\(\delta_{\text{tip}}\)</td>
+      <td>\(0.201 \ \text{in}\)</td>
+      <td>Horizontal deflection at the load application point (free end).</td>
+    </tr>
+    <tr>
+      <td>\(\varepsilon_{\text{gauge}}\)</td>
+      <td>\(5.63 \times 10^{-4} \ \text{in/in} \; = \; 563 \ \mu\varepsilon\)</td>
+      <td>Normal strain at the gauge location.</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>These results show good agreement with beam theory for the gauge strain (within about 6%), while the FEM predicts a slightly larger tip deflection (about 20% higher) and a much higher peak stress near the drive due to local stress concentrations that are not captured by the simple beam model.</p>
+
+<h2 id="9-torque-wrench-sensitivity-mvv-from-fem-strain">9. Torque Wrench Sensitivity (mV/V from FEM Strain)</h2>
+
+<p>From the FEM analysis, the strain at the gauge location is<br />
+\(\varepsilon_{\text{gauge}} = 5.63 \times 10^{-4} \; (563 \,\mu\varepsilon).\)</p>
+
+<p>Using a standard constantan-foil gauge with<br />
+\(GF = 2.0,\)<br />
+and instrumenting the wrench with a <strong>full-bridge</strong> configuration (four active gauges arranged so that all grids experience shear strain of equal magnitude, with opposite signs in adjacent bridge arms), the small-strain bridge output is approximated by<br />
+\(\frac{V_{\text{out}}}{V_{\text{in}}} \approx GF \,\varepsilon_{\text{gauge}}.\)</p>
+
+<p>Substituting the FEM strain result gives<br />
+\(\frac{V_{\text{out}}}{V_{\text{in}}} = (2.0)\,(5.63 \times 10^{-4}) = 1.13 \times 10^{-3} \;\text{V/V}.\)</p>
+
+<p>Thus, the torque-wrench sensitivity at the rated torque is<br />
+\(\boxed{\frac{V_{\text{out}}}{V_{\text{in}}} = 1.13 \,\text{mV/V}}\)<br />
+which satisfies the project requirement of achieving at least \(1.0 \,\text{mV/V}\) at<br />
+\(T = 600 \,\text{in·lbf}.\)</p>
+
+<h2 id="10-strain-gauge-selection">10. Strain Gauge Selection</h2>
+
+<p>I selected the <strong>OMEGA SGT-2H-350-SY41</strong> shear strain gauge for the torque-wrench handle. It is a constantan-foil shear/torsion gauge designed to measure in-plane shear strain, which matches the strain state produced by torque in the rectangular handle.</p>
+
+<p><strong>Key properties</strong></p>
+<ul>
+  <li>Resistance: \(350\,\Omega\)</li>
+  <li>Gauge factor: \(GF \approx 2.0\)</li>
+  <li>Pattern: shear grid (±45° orientation)</li>
+  <li>Material: constantan foil on polyimide backing</li>
+</ul>
+
+<p><strong>Physical size and fit</strong></p>
+<ul>
+  <li>Grid length ≈ <strong>3.0 mm (0.12 in)</strong></li>
+  <li>Grid width ≈ <strong>2.6 mm (0.10 in)</strong></li>
+  <li>Typical carrier size &lt; <strong>10 mm × 5 mm (0.39 in × 0.20 in)</strong></li>
+</ul>
+
+<p>The available bonding surface on the handle (0.612 in × 0.50 in cross-section, with a long flat side face) is far larger than the required gauge footprint, so the gauge <strong>fits easily</strong> at the selected location<br />
+\(c = 1.0 \,\text{in}.\)</p>
+
+<p><strong>Bridge configuration</strong></p>
+
+<p>Four identical SGT-2H-350-SY41 gauges are wired in a <strong>full-bridge shear configuration</strong>, which:</p>
+<ul>
+  <li>rejects bending strain,</li>
+  <li>provides temperature compensation,</li>
+  <li>maximizes output sensitivity.</li>
+</ul>
+
+<p>Using the FEM strain<br />
+\(\varepsilon_{\text{gauge}} = 5.63\times10^{-4},\)<br />
+the full bridge gives<br />
+\(\frac{V_{\text{out}}}{V_{\text{in}}} = GF\,\varepsilon = 1.13 \,\text{mV/V},\)<br />
+which exceeds the required <strong>1.0 mV/V</strong> sensitivity at<br />
+\(T = 600 \,\text{in·lbf}.\)</p>
+
+<h2 id="11-safety-factor-checks">11. Safety Factor Checks</h2>
+
+<p>The design must satisfy three safety-factor requirements:</p>
+
+<ul>
+  <li>Yield (or brittle) failure: \(X_0 \ge 4\)</li>
+  <li>Crack growth from an initial surface crack of depth \(a = 0.04 \text{ in}\): \(X_K \ge 2\)</li>
+  <li>Fatigue stress: \(X_S \ge 1.5\)</li>
+</ul>
+
+<p>Using the hand-calculation stress for the improved design, the nominal bending stress at the gauge section is</p>
+
+\[\sigma_{\text{nom}} = 19.2 \ \text{ksi}.\]
+
+<p>For M42 steel, I used</p>
+
+<ul>
+  <li>Yield strength: \(S_y = 120 \ \text{ksi}\)</li>
+  <li>Fatigue strength at \(10^6\) cycles: \(S_{\text{fatigue}} = 115 \ \text{ksi}\)</li>
+  <li>Fracture toughness: \(K_{IC} = 15 \ \text{ksi}\sqrt{\text{in}}\)</li>
+  <li>Geometry factor for a small surface crack: \(Y = 1.12.\)</li>
+</ul>
+
+<p>The safety factors are then</p>
+
+<ul>
+  <li>
+    <p><strong>Yield / static failure</strong></p>
+
+\[X_0 = \frac{S_y}{\sigma_{\text{nom}}}
+= \frac{120}{19.2} \approx 6.24.\]
+  </li>
+  <li>
+    <p><strong>Crack growth from a surface crack</strong></p>
+
+\[X_K = \frac{K_{IC}}{Y \, \sigma_{\text{nom}}\sqrt{\pi a}}
+\approx 2.00.\]
+  </li>
+  <li>
+    <p><strong>Fatigue</strong></p>
+
+\[X_S = \frac{S_{\text{fatigue}}}{\sigma_{\text{nom}}}
+= \frac{115}{19.2} \approx 5.98.\]
+  </li>
+</ul>
+
+<p>All three safety factors <strong>exceed the required limits</strong><br />
+(\(X_0 \ge 4,\ X_K \ge 2,\ X_S \ge 1.5\)), so the final design is acceptable with respect to yield, fracture, and fatigue.</p>
 
 </div>
 
