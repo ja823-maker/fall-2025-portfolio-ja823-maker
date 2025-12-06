@@ -5,7 +5,7 @@ permalink: /active-suspension/
 ---
 
 # MAE 3260 Final Project: Modeling and Control of an Active Suspension System  
-**Team:** Usanbolor Amartuvshin, Charles Pearson, John Apessos  
+**Team:** John Apessos, Usanbolor Amartuvshin, Charles Pearson
 
 ---
 
