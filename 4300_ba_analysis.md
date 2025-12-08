@@ -15,7 +15,7 @@ This report presents an engineering ethics analysis of the Boeing 737 MAX incide
 ## 1. Identification of Core Ethical Issues
 An initial review of the case reveals several ethically significant questions shaping the development and certification of the 737 MAX:
 
-- Whether critical system behaviors—particularly those of MCAS—should have been disclosed more transparently to pilots and airlines.  
+- Whether critical system behaviors (particularly those of MCAS) should have been disclosed more transparently to pilots and airlines.  
 - Whether the reliance on a single angle-of-attack sensor met acceptable engineering safety standards.  
 - Whether engineers should have withheld certification approval until adequate redundancy and testing were implemented.  
 - Whether production schedules and corporate objectives inappropriately influenced technical safety decisions.  
