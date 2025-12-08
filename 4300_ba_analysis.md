@@ -84,4 +84,3 @@ This analysis demonstrates that engineering failures rarely stem from technical 
 
 By examining the case through a structured ethical framework, this report highlights how safety-critical engineering requires not only technical competence but also moral responsibility, systemic awareness, and institutional support. These lessons are broadly applicable to the future of aviation, autonomous systems, and any domain where engineered systems carry risks to human life.
 
----
