@@ -16,7 +16,7 @@ nav:
   - name: "John Apessos"
     link: /
   - name: "CV"
-    link: /cv.html
+    link: /cv.md
   - name: "CUAD"
     link: /cuad.html
   - name: "3270 Analysis"
