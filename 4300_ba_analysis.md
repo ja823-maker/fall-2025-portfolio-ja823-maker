@@ -1,6 +1,6 @@
 ---
 layout: page
-title: "Engineering Ethics Analysis: The Boeing 737 MAX Case"
+title: "737 MAX Ethics"
 permalink: /boeing-ethics-analysis/
 ---
 
