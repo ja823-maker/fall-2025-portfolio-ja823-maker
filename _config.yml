@@ -12,16 +12,10 @@ kramdown:
   math_engine_opts:
     preview: "none"
 
-nav:
-  - name: "John Apessos"
-    link: /
-  - name: "CV"
-    link: /cv.md
-  - name: "CUAD"
-    link: /cuad.html
-  - name: "3270 Analysis"
-    link: /3270_analysis.html
-  - name: "3260 Suspension Analysis"
-    link: /3260_suspension_analysis.html
-  - name: "4300 BA Analysis"
-    link: /4300_ba_analysis.html
+header_pages:
+  - cv.md
+  - cuad.md
+  - 3270_analysis.md
+  - 3260_suspension_analysis.md
+  - 4300_ba_analysis.md
+
